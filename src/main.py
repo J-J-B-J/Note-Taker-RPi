@@ -5,11 +5,11 @@
 # Reader/PCD   Pi Pico
 # Pin          Pin
 # ------------------------
-# RST          GP0
-# SDA(SS)      GP1
-# SCK          GP2
-# MOSI         GP3
-# MISO         GP4
+# RST          GP12
+# SDA(SS)      GP13
+# SCK          GP14
+# MOSI         GP15
+# MISO         GP8
 
 # ------------------------
 # LED          Raspberry
@@ -38,6 +38,6 @@ except Exception as e:
 	from machine import Pin
 	while True:
 		Pin(25, Pin.OUT).value(1)
-		sleep(0.25)
+		sleep(1)
 		Pin(25, Pin.OUT).value(0)
-		sleep(0.25)
+		sleep(1)

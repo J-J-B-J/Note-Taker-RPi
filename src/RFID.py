@@ -1,17 +1,18 @@
 from mfrc522 import MFRC522
 from LED import *
 
-RST_Pin = 0
-SS_Pin = 1
-SCK_Pin = 2
-MOSI_Pin = 3
-MISO_Pin = 4
+SPI_ID = 1
+RST_Pin = 12
+SS_Pin = 13
+SCK_Pin = 14
+MOSI_Pin = 15
+MISO_Pin = 8
 
 Cards = ["1C740DB2","5E07C119",]
 
 class RFID_Reader:
 	def __init__(self):
-		self.reader = reader = MFRC522(spi_id=0,sck=SCK_Pin,miso=MISO_Pin,mosi=MOSI_Pin,cs=SS_Pin,rst=RST_Pin)
+		self.reader = reader = MFRC522(spi_id=SPI_ID,sck=SCK_Pin,miso=MISO_Pin,mosi=MOSI_Pin,cs=SS_Pin,rst=RST_Pin)
 	
 	def uidToString(self, uid):
 		mystring = ""
