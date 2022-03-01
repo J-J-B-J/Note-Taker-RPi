@@ -33,6 +33,7 @@ try:
 		main()
 
 except Exception as e:
+	print(e)
 	from time import sleep
 	from machine import Pin
 	while True:
