@@ -1,4 +1,5 @@
 from mfrc522 import MFRC522
+from LED_Class import *
 
 RST_Pin = 0
 SS_Pin = 1
@@ -19,6 +20,7 @@ class RFID_Reader:
 		return mystring
 	
 	def readCard(self):
+		leds.Yellow()
 		print("Tap card to unlock.")
 		done = False
 		while done == False:
@@ -29,9 +31,14 @@ class RFID_Reader:
 				if stat == self.reader.OK:
 					card_uid = self.uidToString(uid)
 					if card_uid in Cards:
+						leds.Green()
 						print("Correct Card!")
 					else:
+						leds.Red()
 						print("Incorrect Card!")
 					done = True
 				else:
 					pass
+
+
+RFID = RFID_Reader()

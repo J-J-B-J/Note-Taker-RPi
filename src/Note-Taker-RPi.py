@@ -1,13 +1,9 @@
-from machine import Pin
-from LED_Class import Led
-from RFID_Class import RFID_Reader
+from RFID_Class import *
 from Rotary_Class import *
 
-typepin = 2
-modepin = 3
 
+# Pin layout and other settings for specific modules can be changed in their specific programs
 
-# Pin layout and valid card UIDs for RFID Reader can be changed in RFID_Class.py
 # ------------------------
 # MFRC522      Raspberry
 # Reader/PCD   Pi Pico
@@ -19,23 +15,14 @@ modepin = 3
 # MOSI         GP3
 # MISO         GP4
 
-LedGreenPin = 16
-LedYellowPin = 17
-LedRedPin = 18
-
-num_of_modes = 3
-modes = ["Letters","Numbers","Symbols"]
-
-kb1_size = 29
-kb_1 = ["A","B","C","D","E","F","G","H","I","J","K","L","M",
-		"N","O","P","Q","R","S","T","U","V","W","X","Y","Z",
-		"RE","BS"," "]
-kb2_size = 13
-kb_2 = ["1","2","3","4","5","6","7","8","9","0","RE","BS"," "]
-kb3_size = 33
-kb_3 = ["!","@","#","$","%","^","&","*","(",")","-","_","=",
-		"+","[","]","{","}","\\","|","`","~",";",":",",",".",
-		"<",">","/","?","RE","BS"," "]
+# ------------------------
+# LED          Raspberry
+# Colour       Pi Pico
+#              Pin
+# ------------------------
+# Green        GP16
+# Yellow       GP17
+# Red          GP18
 
 
-RFID_Reader().readCard()
+RFID.readCard()
