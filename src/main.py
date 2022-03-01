@@ -1,7 +1,3 @@
-from RFID_Class import *
-from Rotary_Class import *
-
-
 # Pin layout and other settings for specific modules can be changed in their specific programs
 
 # ------------------------
@@ -24,5 +20,23 @@ from Rotary_Class import *
 # Yellow       GP17
 # Red          GP18
 
+from RFID import *
+from Rotary import *
 
-RFID.readCard()
+
+def main():
+	RFID.readCard()
+
+
+try:
+	if __name__ == "__main__":
+		main()
+
+except Exception as e:
+	from time import sleep
+	from machine import Pin
+	while True:
+		Pin(25, Pin.OUT).value(1)
+		sleep(0.25)
+		Pin(25, Pin.OUT).value(0)
+		sleep(0.25)

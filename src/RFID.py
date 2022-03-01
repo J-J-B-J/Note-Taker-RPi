@@ -1,5 +1,5 @@
 from mfrc522 import MFRC522
-from LED_Class import *
+from LED import *
 
 RST_Pin = 0
 SS_Pin = 1
