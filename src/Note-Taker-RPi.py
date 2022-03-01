@@ -1,6 +1,7 @@
 from machine import Pin
-from RFID_Class import RFID_Reader
 from LED_Class import Led
+from RFID_Class import RFID_Reader
+from Rotary_Class import *
 
 typepin = 2
 modepin = 3
