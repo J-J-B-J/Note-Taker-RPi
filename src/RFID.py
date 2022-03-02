@@ -1,3 +1,6 @@
+if __name__ == "__main__":
+	print("You ran the wrong file!!!")
+
 from mfrc522 import MFRC522
 from Screen import *
 

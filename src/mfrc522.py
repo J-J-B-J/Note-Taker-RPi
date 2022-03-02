@@ -1,3 +1,6 @@
+if __name__ == "__main__":
+	print("You ran the wrong file!!!")
+
 from machine import Pin, SPI
 from os import uname
 

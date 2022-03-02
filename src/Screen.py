@@ -1,3 +1,6 @@
+if __name__ == "__main__":
+	print("You ran the wrong file!!!")
+
 import time
 from machine import Pin,I2C
 
