@@ -28,16 +28,5 @@ def main():
 	RFID.readCard()
 
 
-try:
-	if __name__ == "__main__":
-		main()
-
-except Exception as e:
-	print(e)
-	from time import sleep
-	from machine import Pin
-	while True:
-		Pin(25, Pin.OUT).value(1)
-		sleep(1)
-		Pin(25, Pin.OUT).value(0)
-		sleep(1)
+if __name__ == "__main__":
+	main()

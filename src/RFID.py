@@ -1,5 +1,5 @@
 from mfrc522 import MFRC522
-from LED import *
+from Screen import *
 
 SPI_ID = 1
 RST_Pin = 12
@@ -21,8 +21,8 @@ class RFID_Reader:
 		return mystring
 	
 	def readCard(self):
-		leds.Yellow()
-		print("Tap card to unlock.")
+		lcd.setColour("Orange")
+		lcd.show("Tap card to unlock!")
 		done = False
 		while done == False:
 		 	self.reader.init()
@@ -32,11 +32,11 @@ class RFID_Reader:
 				if stat == self.reader.OK:
 					card_uid = self.uidToString(uid)
 					if card_uid in Cards:
-						leds.Green()
-						print("Correct Card!")
+						lcd.setColour("Green")
+						lcd.show("Correct Card!")
 					else:
-						leds.Red()
-						print("Incorrect Card!")
+						lcd.setColour("Red")
+						lcd.show("Incorrect Card!")
 					done = True
 				else:
 					pass
