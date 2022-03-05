@@ -1,4 +1,5 @@
-# Pin layout and other settings for specific modules can be changed in their specific programs
+# Pin layout and other settings for specific modules can be changed in their
+# specific programs
 
 # ------------------------
 # MFRC522      Raspberry
@@ -12,21 +13,51 @@
 # MISO         GP8
 
 # ------------------------
-# LED          Raspberry
-# Colour       Pi Pico
+# LCD          Raspberry
+# Screen       Pi Pico
+# Pin          Pin
+# ------------------------
+# SDA          GP4
+# SCL          GP5
+
+# ------------------------
+# Rotary       Raspberry
+# Encoder      Pi Pico
+# Pin          Pin
+# ------------------------
+# DT           GP18
+# CLK          GP19
+
+# ------------------------
+# Button       Raspberry
+# Pin          Pi Pico
 #              Pin
 # ------------------------
-# Green        GP16
-# Yellow       GP17
-# Red          GP18
+# modePin      16
+# typePin      17
 
 from RFID import *
 from Rotary import *
+from sys import exit
+from time import sleep
 
 
 def main():
-	RFID.readCard()
+    unlocked = RFID.read_card()
+    if unlocked:
+        lcd.show("Welcome, Josh!")
+        sleep(1)
+    else:
+        lcd.show("Goodbye, Intruder...")
+        for _ in range(0, 10):
+            lcd.setColour("Darkblue")
+            sleep(0.3)
+            lcd.setColour("Red")
+            sleep(0.3)
+        exit()
+
+    rotary.getTypedLetters()
 
 
 if __name__ == "__main__":
-	main()
+    main()
