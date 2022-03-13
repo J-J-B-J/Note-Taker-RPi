@@ -1,3 +1,9 @@
+if __name__ == "__main__":
+    print("You ran the wrong file!!!")
+    from sys import exit
+
+    exit()
+
 from machine import Pin
 from Screen import *
 from time import sleep
@@ -5,8 +11,8 @@ from time import sleep
 dtpin = 18
 clkpin = 19
 
-typepin = 2
-modepin = 3
+typepin = 17
+modepin = 16
 
 num_of_modes = 3
 modes = ["Letters","Numbers","Symbols"]
@@ -35,8 +41,23 @@ class Rotary:
         self.modePin = Pin(modepin, Pin.IN, Pin.PULL_UP)
         self.mode = 0
         self.oldRotaryLetters = ""
-        self.text = "-"
+        self.text = ["-"]
         self.oldMode = 0
+        self.oldText = ""
+    
+    def title(self, sen):
+        newText = ""
+        for i in range(0, len(sen)):
+            if i == 0:
+                newText += sen[i].upper()
+                continue
+            
+            if sen[i-1] == " ":
+                newText += sen[i].upper()
+                continue
+            
+            newText += sen[i].lower()
+        return newText
     
     def updateEncoder(self):
         step = self.stepPin.value()
@@ -68,14 +89,20 @@ class Rotary:
 
     def appendToText(self, appending_text):
         if (appending_text == "d"):
-            old_text = self.text
-            old_text_length = len(old_text)
-            self.text = old_text[0:old_text_length-1]
+            if self.text[-1] == "-":
+                del self.text[-1]
+            else:
+                old_text = self.text[-1]
+                old_text_length = len(old_text)
+                self.text[-1] = old_text[0:old_text_length-1]
         elif (appending_text == "r"):
-            self.text += "\n-"
-            self.mode = 0  # When new line, set kb to letters
+            self.text.append("-")
+            self.mode = 0  # When new line, set kb to letters and char to A
+            self.position = 0
         else:
-            self.text += appending_text
+            self.text[-1] += appending_text
+        for text in self.text:
+            text = self.title(text)
         self.print_info()
 
     def getRotaryLetters(self):
@@ -91,12 +118,7 @@ class Rotary:
 
     def updateButtons(self):
         if self.typePin.value() == 0:
-            if self.mode == 0:
-                self.appendToText(kb_1[self.getRotary()])
-            elif self.mode == 1:
-                self.appendToText(kb_2[self.getRotary()])
-            elif self.mode == 2:
-                self.appendToText(kb_3[self.getRotary()])
+            self.appendToText(self.getRotaryLetters())
             while self.typePin.value() == 0:
                 pass
             
@@ -104,30 +126,36 @@ class Rotary:
             self.mode += 1
             if self.mode >= num_of_modes:
                 self.mode = 0
+            self.position = 0
             while self.modePin.value() == 0:
                 pass
+            sleep(0.1)
     
     def print_mode(self):
         lcd.show("Mode: ")
         lcd.show(modes[self.mode], (6, 0), clear=False)
-        sleep(1)
+        sleep(0.5)
+        self.print_info()
 
     def print_info(self):
         lcd.show(self.getRotaryLetters(), (15,1))
-        lcd.show(self.text, clear=False)
+        lcd.show(self.text[-1], clear=False)
 
 
     def getTypedLetters(self):
+        lcd.setColour("Darkblue")
         self.print_mode()
         done = False
         while done == False:
             self.updateEncoder()
             self.updateButtons()
             
-            newRotaryLetters = self.getRotaryLetters()
-            if self.oldRotaryLetters != newRotaryLetters:
+            newLetters = self.getRotaryLetters()
+            newText = self.text[-1]
+            if self.oldRotaryLetters != newLetters or self.oldText != newText:
                 self.print_info()
-                self.oldRotaryLetters = newRotaryLetters
+                self.oldRotaryLetters = newLetters
+                self.oldText = newText
             
             
             if self.oldMode != self.mode:
