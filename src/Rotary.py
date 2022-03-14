@@ -7,6 +7,7 @@ if __name__ == "__main__":
 from machine import Pin
 from Screen import *
 from time import sleep
+from json import dump, load
 
 dtpin = 18
 clkpin = 19
@@ -44,6 +45,19 @@ class Rotary:
         self.text = ["-"]
         self.oldMode = 0
         self.oldText = ""
+        self.getText()
+    
+    def getText(self):
+        try:
+            with open('Text.json', 'r') as textFile:
+                self.text = load(textFile)
+        except Exception as e:
+            self.postText()
+            print(e)
+    
+    def postText(self):
+        with open('Text.json', 'w') as textFile:
+                dump(self.text, textFile)
     
     def title(self, sen):
         newText = ""
@@ -103,6 +117,7 @@ class Rotary:
             self.text[-1] += appending_text
         for text in self.text:
             text = self.title(text)
+        self.postText()
         self.print_info()
 
     def getRotaryLetters(self):
