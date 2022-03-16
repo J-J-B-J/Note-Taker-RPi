@@ -7,6 +7,13 @@ if __name__ == "__main__":
 from time import sleep
 from machine import Pin, I2C
 
+
+def lcdError():
+    print("Error! Probable cause: LCD not connected or is not wired properly!")
+    from sys import exit
+    exit()
+
+
 RGB1602_SDA = Pin(4)
 RGB1602_SCL = Pin(5)
 
@@ -72,13 +79,23 @@ class RGB1602:
         self.begin(self._row, self._col)
 
     def command(self, cmd):
-        RGB1602_I2C.writeto_mem(LCD_ADDRESS, 0x80, chr(cmd))
+        try:
+            RGB1602_I2C.writeto_mem(LCD_ADDRESS, 0x80, chr(cmd))
+        except Exception:
+            lcdError()
 
     def write(self, data):
-        RGB1602_I2C.writeto_mem(LCD_ADDRESS, 0x40, chr(data))
+        try:
+            RGB1602_I2C.writeto_mem(LCD_ADDRESS, 0x40, chr(data))
+        except Exception:
+            lcdError()
 
     def setReg(self, reg, data):
-        RGB1602_I2C.writeto_mem(RGB_ADDRESS, reg, chr(data))
+        try:
+            RGB1602_I2C.writeto_mem(RGB_ADDRESS, reg, chr(data))
+        except Exception:
+            lcdError()
+            
 
     def set_rgb(self, r, g, b):
         self.setReg(REG_RED, r)
@@ -90,7 +107,10 @@ class RGB1602:
             col |= 0x80
         else:
             col |= 0xc0
-        RGB1602_I2C.writeto(LCD_ADDRESS, bytearray([0x80, col]))
+        try:
+            RGB1602_I2C.writeto(LCD_ADDRESS, bytearray([0x80, col]))
+        except Exception:
+            lcdError()
 
     def clear(self):
         self.command(LCD_CLEARDISPLAY)

@@ -42,15 +42,21 @@ class RFID_Reader:
         :return: Weather or not the correct card was entered
         """
         lcd.setColour("Orange")
-        lcd.show("Tap card to unlock!")
-        while True:
-            self.reader.init()
-            (stat, tag_type) = self.reader.request(self.reader.REQIDL)
-            if stat == self.reader.OK:
+        lcd.show("Preparing reader...")
+        sleep(1)
+        
+        self.reader.init()
+        stat = self.reader.request(self.reader.REQIDL)
+        
+        if stat == self.reader.OK:
+            lcd.show("Tap card or connect wire to unlock!")
+            while True:
+                (stat, tag_type) = self.reader.request(self.reader.REQIDL)
                 (stat, uid) = self.reader.SelectTagSN()
-                if stat == self.reader.OK:
+                pin_value = Pin(0, Pin.PULL_UP).value()
+                if stat == self.reader.OK or pin_value == 1:
                     card_uid = self.uid_to_string(uid)
-                    if card_uid in Cards:
+                    if card_uid in Cards or pin_value == 1:
                         lcd.setColour("Green")
                         lcd.show("Correct Card!")
                         sleep(1)
@@ -60,6 +66,14 @@ class RFID_Reader:
                         lcd.show("Incorrect Card!")
                         sleep(1)
                         return False
+        else:
+            lcd.show("Connect wire to unlock!")
+            while True:
+                if Pin(0, Pin.PULL_UP).value() == 1:
+                    lcd.setColour("Green")
+                    lcd.show("Correct Pin!")
+                    sleep(1)
+                    return True
 
 
 RFID = RFID_Reader()
