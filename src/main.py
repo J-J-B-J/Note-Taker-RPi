@@ -1,3 +1,5 @@
+"""Main program file"""
+
 # Pin layout and other settings for specific modules can be changed in their
 # specific programs
 
@@ -43,6 +45,9 @@ from time import sleep
 
 
 def main():
+    """
+    Run the program
+    """
     unlocked = RFID.read_card()
     if unlocked:
         lcd.show("Welcome, Josh!")
@@ -56,7 +61,7 @@ def main():
             sleep(0.3)
         exit()
 
-    rotary.getTypedLetters()
+    rotary.get_typed_letters()
 
 
 if __name__ == "__main__":
