@@ -9,6 +9,7 @@ if __name__ == "__main__":
 from Screen import *
 from time import sleep
 from machine import Pin, SPI
+from os import uname
 
 SPI_ID = 1
 RST_Pin = 12
