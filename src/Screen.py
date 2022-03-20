@@ -252,15 +252,16 @@ class LCD:
         :param pos: text location (top left is (0,0), top right is (15,0))
         :param serial: also print the text to the serial monitor/console/REPL
         :param clear: clear the display before printing the text
+        :return: status
         """
         if clear:
             self.lcd.clear()
         self.lcd.setCursor(pos[0], pos[1])
         if len(text) <= 16:
             self.lcd.printout(text)
-        elif len(text) > 32:
+        elif len(text) > 29:
             self.show("Line Too Long")
-            sleep(1)
+            return False
         else:
             self.lcd.printout(text[:15] + "-")
             if pos[1] == 0:
@@ -271,6 +272,7 @@ class LCD:
                 self.lcd.printout("...")
         if serial:
             print(text)
+        return True
 
     def setColour(self, colour: tuple[2]):
         """

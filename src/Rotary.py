@@ -43,7 +43,7 @@ def title(sen):
     """
     new_text = ""
     for i in range(0, len(sen)):
-        if i == 0:
+        if i == 1:
             new_text += sen[i].upper()
             continue
 
@@ -79,7 +79,9 @@ class Rotary:
         """
         try:
             with open('Text.json', 'r') as textFile:
-                self.text = load(textFile)
+                old_text = load(textFile)
+                for text in old_text:
+                    self.text.append(title(text))
         except Exception as e:
             self.postText()
             print(e)
@@ -200,7 +202,12 @@ class Rotary:
         Print the letters and typed text to the screen.
         """
         lcd.show(self.get_rotary_letters(), (15, 1))
-        lcd.show(self.text[-1], clear=False)
+        good_line = lcd.show(self.text[-1], clear=False)
+        if not good_line:
+            sleep(1)
+            old_text = self.text[-1]
+            old_text_length = len(old_text)
+            self.text[-1] = old_text[0:old_text_length - 1]
 
     def get_typed_letters(self):
         """
