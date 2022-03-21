@@ -81,10 +81,11 @@ class Rotary:
             with open('Text.json', 'r') as textFile:
                 old_text = load(textFile)
                 for text in old_text:
+                    while len(text) > 29:
+                        text = text[:-1]
                     self.text.append(title(text))
-        except Exception as e:
+        except FileNotFoundError:
             self.postText()
-            print(e)
 
     def postText(self):
         """
@@ -206,8 +207,8 @@ class Rotary:
         if not good_line:
             sleep(1)
             old_text = self.text[-1]
-            old_text_length = len(old_text)
-            self.text[-1] = old_text[0:old_text_length - 1]
+            self.text[-1] = old_text[:-1]
+            self.print_info()
 
     def get_typed_letters(self):
         """
